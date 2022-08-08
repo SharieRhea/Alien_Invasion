@@ -1,6 +1,8 @@
 import sys
 from time import sleep
 
+import json
+
 import pygame
 
 from settings import Settings
@@ -64,7 +66,9 @@ class AlienInvasion:
         """Respond to keyboard and mouse events."""
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                 sys.exit()
+                with open("alien_invasion/highscore.json", 'w') as f:
+                    json.dump(self.stats.high_score, f)
+                sys.exit()
             elif event.type == pygame.KEYDOWN:
                 self._check_keydown_events(event) 
             elif event.type == pygame.KEYUP:
@@ -105,6 +109,8 @@ class AlienInvasion:
         elif event.key == pygame.K_LEFT:
             self.ship.moving_left = True
         elif event.key == pygame.K_q:
+            with open("alien_invasion/highscore.json", 'w') as f:
+                json.dump(self.stats.high_score, f)
             sys.exit()
         elif event.key == pygame.K_SPACE:
             self._fire_bullet()
